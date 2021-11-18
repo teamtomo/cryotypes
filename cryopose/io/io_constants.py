@@ -1,0 +1,1 @@
+RAW_DATA_COLUMN_NAME_PREFIX = "src_"
