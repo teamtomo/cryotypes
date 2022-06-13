@@ -6,4 +6,4 @@
 [![CI](https://github.com/alisterburt/cryopose/workflows/ci/badge.svg)](https://github.com/alisterburt/cryopose/actions)
 [![codecov](https://codecov.io/gh/alisterburt/cryopose/branch/master/graph/badge.svg)](https://codecov.io/gh/alisterburt/cryopose)
 
-simplify dealing with pose information from cryo-ET software
+A super-simple data structure for particle poses from cryo-ET software
