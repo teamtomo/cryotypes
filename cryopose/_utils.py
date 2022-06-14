@@ -36,3 +36,4 @@ def add_particle_orientations(
         n_particles = df.shape[0]
         orientations = Rotation.identity(num=n_particles)
     df[CPDL.ORIENTATION] = unstack_rotations(orientations)
+    return df
