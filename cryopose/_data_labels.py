@@ -1,9 +1,10 @@
-CRYOPOSE_POSITION_X = "x"
-CRYOPOSE_POSITION_Y = "y"
-CRYOPOSE_POSITION_Z = "z"
+class Cryopose:
+    POSITION_X = 'x'
+    POSITION_Y = 'y'
+    POSITION_Z = 'z'
 
-CRYOPOSE_ROTATION = "orientation"
+    ROTATION = 'orientation'
 
-CRYOPOSE_EXPERIMENT_ID = "id"
+    EXPERIMENT_ID = 'id'
 
-CRYOPOSE_VOXEL_SPACING = "spacing"
+    VOXEL_SPACING = "spacing"

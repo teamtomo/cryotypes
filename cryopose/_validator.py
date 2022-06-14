@@ -1,29 +1,24 @@
 import pandas as pd
 
-from ._data_labels import (
-    CRYOPOSE_POSITION_X,
-    CRYOPOSE_POSITION_Y,
-    CRYOPOSE_POSITION_Z,
-    CRYOPOSE_ROTATION,
-)
+from ._data_labels import Cryopose
 
 
-def validate_cryopose_df_3d(df: pd.DataFrame) -> bool:
+def is_valid_3d_cryopose(df: pd.DataFrame) -> bool:
     """Validate a cryopose dataframe for particle poses in 3D."""
     required_columns = [
-        CRYOPOSE_POSITION_X,
-        CRYOPOSE_POSITION_Y,
-        CRYOPOSE_POSITION_Z,
-        CRYOPOSE_ROTATION,
+        Cryopose.POSITION_X,
+        Cryopose.POSITION_Y,
+        Cryopose.POSITION_Z,
+        Cryopose.ROTATION,
     ]
     return all(k in df for k in required_columns)
 
 
-def validate_cryopose_df_2d(df: pd.DataFrame) -> bool:
+def is_valid_2d_cryopose(df: pd.DataFrame) -> bool:
     """Validate a cryopose dataframe for particle poses in 3D."""
     required_columns = [
-        CRYOPOSE_POSITION_X,
-        CRYOPOSE_POSITION_Y,
-        CRYOPOSE_ROTATION,
+        Cryopose.POSITION_X,
+        Cryopose.POSITION_Y,
+        Cryopose.ROTATION,
     ]
     return all(k in df for k in required_columns)
