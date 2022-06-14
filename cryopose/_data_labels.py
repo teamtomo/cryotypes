@@ -1,0 +1,9 @@
+CRYOPOSE_POSITION_X = "x"
+CRYOPOSE_POSITION_Y = "y"
+CRYOPOSE_POSITION_Z = "z"
+
+CRYOPOSE_ROTATION = "orientation"
+
+CRYOPOSE_TILT_SERIES_ID = "tilt_series_id"
+
+CRYOPOSE_VOXEL_SPACING = "voxel_spacing"
