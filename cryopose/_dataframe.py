@@ -6,11 +6,11 @@ import pandas as pd
 from scipy.spatial.transform import Rotation
 
 from ._data_labels import (
+    CRYOPOSE_EXPERIMENT_ID,
     CRYOPOSE_POSITION_X,
     CRYOPOSE_POSITION_Y,
     CRYOPOSE_POSITION_Z,
     CRYOPOSE_ROTATION,
-    CRYOPOSE_TILT_SERIES_ID,
     CRYOPOSE_VOXEL_SPACING,
 )
 from ._utils import unstack_rotations
@@ -48,7 +48,7 @@ def construct_cryopose_df(
 ) -> pd.DataFrame:
     """Convenient constructor for a valid cryopose DataFrame."""
     df = _construct_base_cryopose_df(xyz, rotations)
-    df[CRYOPOSE_TILT_SERIES_ID] = tilt_series_ids
+    df[CRYOPOSE_EXPERIMENT_ID] = tilt_series_ids
     df[CRYOPOSE_VOXEL_SPACING] = voxel_spacing_angstroms
     for k, v in metadata.items():
         df[k] = v

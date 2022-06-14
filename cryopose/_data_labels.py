@@ -4,6 +4,6 @@ CRYOPOSE_POSITION_Z = "z"
 
 CRYOPOSE_ROTATION = "orientation"
 
-CRYOPOSE_TILT_SERIES_ID = "tilt_series_id"
+CRYOPOSE_EXPERIMENT_ID = "id"
 
-CRYOPOSE_VOXEL_SPACING = "voxel_spacing"
+CRYOPOSE_VOXEL_SPACING = "spacing"

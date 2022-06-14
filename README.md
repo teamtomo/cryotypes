@@ -6,4 +6,6 @@
 [![CI](https://github.com/alisterburt/cryopose/workflows/ci/badge.svg)](https://github.com/alisterburt/cryopose/actions)
 [![codecov](https://codecov.io/gh/alisterburt/cryopose/branch/master/graph/badge.svg)](https://codecov.io/gh/alisterburt/cryopose)
 
-A super-simple data structure for particle poses from cryo-ET software
+`cryopose` defines a super-simple, extensible data structure for particle poses from cryo-ET software.
+
+## What is it?
