@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from scipy.spatial.transform import Rotation
 
-from ._data_labels import CRYOPOSE_ORIENTATION
+from ._data_labels import CryoPoseDataLabels as CPDL
 
 
 def unstack_rotations(rotations: Union[Rotation, Sequence[Rotation]]) -> List[Rotation]:
@@ -28,16 +28,11 @@ def guess_ndim(positions: np.ndarray) -> int:
     return ndim
 
 
-def generate_default_orientations(n: int) -> List[Rotation]:
-    """Generate default unrotated particle orientations."""
-    return [Rotation.from_matrix(np.eye(3)) for _ in range(n)]
-
-
 def add_particle_orientations(
     df: pd.DataFrame, orientations: Optional[Rotation]
 ) -> pd.DataFrame:
     """Add particle orientations to a cryopose dataframe."""
     if orientations is None:
         n_particles = df.shape[0]
-        orientations = generate_default_orientations(n_particles)
-    df[CRYOPOSE_ORIENTATION] = unstack_rotations(orientations)
+        orientations = Rotation.identity(num=n_particles)
+    df[CPDL.ORIENTATION] = unstack_rotations(orientations)
