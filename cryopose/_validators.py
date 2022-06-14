@@ -9,7 +9,7 @@ def is_valid_3d_cryopose(df: pd.DataFrame) -> bool:
         Cryopose.POSITION_X,
         Cryopose.POSITION_Y,
         Cryopose.POSITION_Z,
-        Cryopose.ROTATION,
+        Cryopose.ORIENTATION,
     ]
     return all(k in df for k in required_columns)
 
@@ -19,6 +19,6 @@ def is_valid_2d_cryopose(df: pd.DataFrame) -> bool:
     required_columns = [
         Cryopose.POSITION_X,
         Cryopose.POSITION_Y,
-        Cryopose.ROTATION,
+        Cryopose.ORIENTATION,
     ]
     return all(k in df for k in required_columns)

@@ -3,8 +3,8 @@ class Cryopose:
     POSITION_Y = 'y'
     POSITION_Z = 'z'
 
-    ROTATION = 'orientation'
+    ORIENTATION = 'orientation'
 
     EXPERIMENT_ID = 'id'
 
-    VOXEL_SPACING = "spacing"
+    PIXEL_SPACING = "spacing"
