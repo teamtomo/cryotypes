@@ -4,32 +4,28 @@ import numpy as np
 import pandas as pd
 from scipy.spatial.transform import Rotation
 
-from ._data_labels import (
-    CRYOPOSE_EXPERIMENT_ID,
-    CRYOPOSE_PIXEL_SPACING,
-    CRYOPOSE_POSITION_X,
-    CRYOPOSE_POSITION_Y,
-    CRYOPOSE_POSITION_Z,
-)
+from ._data_labels import CryoPoseDataLabels as CPDL
 from ._utils import add_particle_orientations, guess_ndim
 
 _T = TypeVar("_T")
 
 
-def _construct_base_cryopose_df(
-    positions: np.ndarray, orientations: Optional[Rotation]
-) -> pd.DataFrame:
-    """Construct a base cryopose DataFrame with particle positions only."""
+def _construct_base_cryopose_df(positions: np.ndarray) -> pd.DataFrame:
+    """Construct a base cryopose DataFrame with particle positions only.
+
+    Coordinates for positions can be 2D (n, 2) or 3D (n, 3). The X-coordinates
+    should be in the first column, Y in the second, Z in the third (if present).
+    """
     ndim = guess_ndim(positions)
     positions = np.asarray(positions).astype(float).reshape((-1, ndim))
     df = pd.DataFrame(
         {
-            CRYOPOSE_POSITION_X: positions[:, 0],
-            CRYOPOSE_POSITION_Y: positions[:, 1],
+            CPDL.POSITION_X: positions[:, 0],
+            CPDL.POSITION_Y: positions[:, 1],
         }
     )
     if ndim == 3:
-        df[CRYOPOSE_POSITION_Z] = positions[:, 2]
+        df[CPDL.POSITION_Z] = positions[:, 2]
     return df
 
 
@@ -41,10 +37,10 @@ def construct_cryopose_df(
     metadata: Mapping[str, _T],
 ) -> pd.DataFrame:
     """Constructor for a valid cryopose DataFrame."""
-    df = _construct_base_cryopose_df(positions, orientations)
+    df = _construct_base_cryopose_df(positions)
     df = add_particle_orientations(df, orientations)
-    df[CRYOPOSE_EXPERIMENT_ID] = experiment_ids
-    df[CRYOPOSE_PIXEL_SPACING] = (
+    df[CPDL.EXPERIMENT_ID] = experiment_ids
+    df[CPDL.PIXEL_SPACING] = (
         1 if pixel_spacing_angstroms is None else pixel_spacing_angstroms
     )
     for k, v in metadata.items():

@@ -1,10 +1,10 @@
-class Cryopose:
-    POSITION_X = 'x'
-    POSITION_Y = 'y'
-    POSITION_Z = 'z'
+class CryoPoseDataLabels:
+    POSITION_X = "x"
+    POSITION_Y = "y"
+    POSITION_Z = "z"
 
-    ORIENTATION = 'orientation'
+    ORIENTATION = "orientation"
 
-    EXPERIMENT_ID = 'id'
+    EXPERIMENT_ID = "id"
 
     PIXEL_SPACING = "spacing"
