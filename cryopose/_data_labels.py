@@ -5,6 +5,6 @@ class CryoPoseDataLabels:
 
     ORIENTATION = "orientation"
 
-    EXPERIMENT_ID = "id"
+    EXPERIMENT_ID = "experiment_id"
 
-    PIXEL_SPACING = "spacing"
+    PIXEL_SPACING = "pixel_spacing"
