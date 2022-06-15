@@ -7,7 +7,11 @@ import pandas as pd
 from scipy.spatial.transform import Rotation
 
 from ._data_labels import CryoPoseDataLabels as CPDL
-from ._validators import validate_cryopose, validate_orientations, validate_positions
+from ._validators import (
+    validate_cryopose_dataframe,
+    validate_orientations,
+    validate_positions,
+)
 
 if TYPE_CHECKING:
     import Literal
@@ -53,4 +57,4 @@ def construct_cryopose_df(
         for k, v in metadata.items():
             df[k] = v
 
-    return validate_cryopose(df, ndim=ndim)
+    return validate_cryopose_dataframe(df, ndim=ndim)

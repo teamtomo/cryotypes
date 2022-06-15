@@ -33,7 +33,9 @@ def validate_orientations(
     return Rotation.concatenate(orientations)
 
 
-def validate_cryopose(df: pd.DataFrame, ndim: Literal[2, 3] = 3) -> pd.DataFrame:
+def validate_cryopose_dataframe(
+    df: pd.DataFrame, ndim: Literal[2, 3] = 3
+) -> pd.DataFrame:
     """Validate a cryopose dataframe."""
     for col in CPDL.POSITION[:ndim]:
         if col not in df:
