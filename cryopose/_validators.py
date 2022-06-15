@@ -19,11 +19,7 @@ def validate_positions(positions: ArrayLike, ndim: Literal[2, 3] = 3) -> NDArray
 
 
 def validate_orientations(orientations: Union[Rotation, Sequence[Rotation]], ndim: Literal[2, 3] = 3) -> Rotation:
-    orientations = Rotation.concatenate(orientations)
-    if ndim == 2:
-        # TODO: check that rotation is only inplane?
-        ...
-    return orientations
+    return Rotation.concatenate(orientations)
 
 
 def validate_cryopose(df: pd.DataFrame, ndim: Literal[2, 3] = 3) -> pd.DataFrame:
