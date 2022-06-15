@@ -2,6 +2,7 @@ class CryoPoseDataLabels:
     POSITION_X = "x"
     POSITION_Y = "y"
     POSITION_Z = "z"
+    POSITION = [POSITION_X, POSITION_Y, POSITION_Z]
 
     ORIENTATION = "orientation"
 

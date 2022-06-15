@@ -1,48 +1,54 @@
-from typing import Mapping, Optional, Sequence, TypeVar, Union
+from typing import Mapping, Optional, Sequence, TypeVar, Union, Literal
 
 import numpy as np
 import pandas as pd
 from scipy.spatial.transform import Rotation
 
 from ._data_labels import CryoPoseDataLabels as CPDL
-from ._utils import add_particle_orientations, guess_ndim
+from ._validators import validate_positions, validate_orientations, validate_cryopose
+
 
 _T = TypeVar("_T")
 
 
-def _construct_base_cryopose_df(positions: np.ndarray) -> pd.DataFrame:
-    """Construct a base cryopose DataFrame with particle positions only.
-
-    Coordinates for positions can be 2D (n, 2) or 3D (n, 3). The X-coordinates
-    should be in the first column, Y in the second, Z in the third (if present).
-    """
-    ndim = guess_ndim(positions)
-    positions = np.asarray(positions).astype(float).reshape((-1, ndim))
-    df = pd.DataFrame(
-        {
-            CPDL.POSITION_X: positions[:, 0],
-            CPDL.POSITION_Y: positions[:, 1],
-        }
+def _construct_empty_cryopose_df(ndim: Literal[2, 3] = 3) -> pd.DataFrame:
+    return pd.DataFrame(
+        columns=[
+            *CPDL.POSITION[:ndim],
+            CPDL.ORIENTATION,
+            CPDL.PIXEL_SPACING,
+            CPDL.EXPERIMENT_ID,
+        ]
     )
-    if ndim == 3:
-        df[CPDL.POSITION_Z] = positions[:, 2]
-    return df
 
 
 def construct_cryopose_df(
     positions: np.ndarray,
-    orientations: Optional[Rotation],
-    experiment_ids: Optional[Union[str, Sequence[str]]],
-    pixel_spacing_angstroms: Optional[Union[float, Sequence[float]]],
-    metadata: Mapping[str, _T],
+    orientations: Optional[Rotation] = None,
+    experiment_ids: Optional[Union[str, Sequence[str]]] = None,
+    pixel_spacing_angstroms: Optional[Union[float, Sequence[float]]] = None,
+    metadata: Optional[Mapping[str, Sequence]] = None,
+    ndim: Literal[2, 3] = 3,
 ) -> pd.DataFrame:
     """Constructor for a valid cryopose DataFrame."""
-    df = _construct_base_cryopose_df(positions)
-    df = add_particle_orientations(df, orientations)
+    df = _construct_empty_cryopose_df(ndim)
+    df[CPDL.POSITION[:ndim]] = validate_positions(positions, ndim)
+
+    if orientations is None:
+        orientations = Rotation.identity(len(positions))
+    df[CPDL.ORIENTATION] = validate_orientations(orientations, ndim)
+
+    if pixel_spacing_angstroms is None:
+        pixel_spacing_angstroms = 1.0
+    df[CPDL.PIXEL_SPACING] = pixel_spacing_angstroms
+
+    if experiment_ids is None:
+        experiment_ids = '0'
     df[CPDL.EXPERIMENT_ID] = experiment_ids
-    df[CPDL.PIXEL_SPACING] = (
-        1 if pixel_spacing_angstroms is None else pixel_spacing_angstroms
-    )
-    for k, v in metadata.items():
-        df[k] = v
-    return df
+
+    # optional columns
+    if metadata is not None:
+        for k, v in metadata.items():
+            df[k] = v
+
+    return validate_cryopose(df, ndim=ndim)
