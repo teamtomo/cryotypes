@@ -9,7 +9,7 @@
 `cryopose` defines a super-simple, extensible data structure for sets of particle poses from cryo-EM software.
 
 A `cryopose` dataframe is a [pandas `DataFrame`](https://pandas.pydata.org/docs/) with specific column headings
-for particle positions and orientations, experimental identifiers and pixel/voxel spacing.
+for particle positions and orientations, experiment identifiers and pixel/voxel spacing.
 
 This data-structure can be used for both 2D and 3D particle poses and is easily passed between
 Python packages for file input/output and analysis.
