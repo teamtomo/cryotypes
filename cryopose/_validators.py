@@ -34,32 +34,49 @@ def validate_orientations(
 
 
 def validate_cryopose_dataframe(
-    df: pd.DataFrame, ndim: Literal[2, 3] = 3
+    df: pd.DataFrame,
+    ndim: Literal[2, 3] = 3,
+    coerce: bool = False,
 ) -> pd.DataFrame:
     """Validate a cryopose dataframe."""
+    if coerce:
+        df = df.copy()
+
     for col in CPDL.POSITION[:ndim]:
         if col not in df:
-            raise KeyError(col)
-        if not is_numeric_dtype(df[col]):
+            if not coerce:
+                raise KeyError(col)
+            else:
+                df[col] = 0
+        elif not is_numeric_dtype(df[col]):
             raise TypeError(f'dtype of "{col}" should be a Number, got {df[col].dtype}')
 
     if CPDL.ORIENTATION not in df:
-        raise KeyError(CPDL.ORIENTATION)
+        if not coerce:
+            raise KeyError(CPDL.ORIENTATION)
+        else:
+            df[CPDL.ORIENTATION] = Rotation.identity()
     # cannot just check dtype, so we have to validate the objects themselves
-    if len(df) > 0:
+    elif len(df) > 0:
         validate_orientations(df[CPDL.ORIENTATION], ndim=ndim)
 
     if CPDL.PIXEL_SPACING not in df:
-        raise KeyError(CPDL.PIXEL_SPACING)
-    if not is_numeric_dtype(df[CPDL.PIXEL_SPACING]):
+        if not coerce:
+            raise KeyError(CPDL.PIXEL_SPACING)
+        else:
+            df[CPDL.PIXEL_SPACING] = 1
+    elif not is_numeric_dtype(df[CPDL.PIXEL_SPACING]):
         raise TypeError(
             f'dtype of "{CPDL.PIXEL_SPACING}" should be a Number, '
             f"got {df[CPDL.PIXEL_SPACING].dtype}"
         )
 
     if CPDL.EXPERIMENT_ID not in df:
-        raise KeyError(CPDL.EXPERIMENT_ID)
-    if not is_string_dtype(df[CPDL.EXPERIMENT_ID]):
+        if not coerce:
+            raise KeyError(CPDL.EXPERIMENT_ID)
+        else:
+            df[CPDL.EXPERIMENT_ID] = 0
+    elif not is_string_dtype(df[CPDL.EXPERIMENT_ID]):
         raise TypeError(
             f'dtype of "{CPDL.EXPERIMENT_ID}" should be a string, '
             f"got {df[CPDL.EXPERIMENT_ID].dtype}"
