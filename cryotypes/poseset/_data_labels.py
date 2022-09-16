@@ -1,4 +1,4 @@
-class CryoPoseDataLabels:
+class PoseSetDataLabels:
     POSITION_X = "x"
     POSITION_Y = "y"
     POSITION_Z = "z"

@@ -8,7 +8,7 @@ from numpy.typing import ArrayLike, NDArray
 from pandas.api.types import is_numeric_dtype, is_string_dtype
 from scipy.spatial.transform import Rotation
 
-from ._data_labels import CryoPoseDataLabels as CPDL
+from ._data_labels import PoseSetDataLabels as CPDL
 
 if TYPE_CHECKING:
     import Literal
@@ -22,7 +22,7 @@ def validate_positions(positions: ArrayLike, ndim: Literal[2, 3] = 3) -> NDArray
         )
     if ndim != positions.shape[1]:
         raise ValueError(
-            f"positions are {positions.shape[1]}D, but a {ndim}D cryopose was requested"
+            f"positions are {positions.shape[1]}D, but a {ndim}D poseset was requested"
         )
     return positions
 
@@ -33,12 +33,12 @@ def validate_orientations(
     return Rotation.concatenate(orientations)
 
 
-def validate_cryopose_dataframe(
+def validate_poseset_dataframe(
     df: pd.DataFrame,
     ndim: Literal[2, 3] = 3,
     coerce: bool = False,
 ) -> pd.DataFrame:
-    """Validate a cryopose dataframe."""
+    """Validate a poseset dataframe."""
     if coerce:
         df = df.copy()
 
@@ -75,7 +75,7 @@ def validate_cryopose_dataframe(
         if not coerce:
             raise KeyError(CPDL.EXPERIMENT_ID)
         else:
-            df[CPDL.EXPERIMENT_ID] = 0
+            df[CPDL.EXPERIMENT_ID] = "0"
     elif not is_string_dtype(df[CPDL.EXPERIMENT_ID]):
         raise TypeError(
             f'dtype of "{CPDL.EXPERIMENT_ID}" should be a string, '

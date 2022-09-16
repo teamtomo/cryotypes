@@ -6,10 +6,10 @@ import numpy as np
 import pandas as pd
 from scipy.spatial.transform import Rotation
 
-from ._data_labels import CryoPoseDataLabels as CPDL
+from ._data_labels import PoseSetDataLabels as CPDL
 from ._validators import (
-    validate_cryopose_dataframe,
     validate_orientations,
+    validate_poseset_dataframe,
     validate_positions,
 )
 
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     import Literal
 
 
-def _construct_empty_cryopose_df(ndim: Literal[2, 3] = 3) -> pd.DataFrame:
+def _construct_empty_poseset_df(ndim: Literal[2, 3] = 3) -> pd.DataFrame:
     return pd.DataFrame(
         columns=[
             *CPDL.POSITION[:ndim],
@@ -28,7 +28,7 @@ def _construct_empty_cryopose_df(ndim: Literal[2, 3] = 3) -> pd.DataFrame:
     )
 
 
-def construct_cryopose_df(
+def construct_poseset_df(
     positions: np.ndarray,
     orientations: Rotation | None = None,
     experiment_ids: str | Sequence[str] | None = None,
@@ -36,8 +36,8 @@ def construct_cryopose_df(
     metadata: Mapping[str, Sequence] | None = None,
     ndim: Literal[2, 3] = 3,
 ) -> pd.DataFrame:
-    """Constructor for a valid cryopose DataFrame."""
-    df = _construct_empty_cryopose_df(ndim)
+    """Constructor for a valid poseset DataFrame."""
+    df = _construct_empty_poseset_df(ndim)
     df[CPDL.POSITION[:ndim]] = validate_positions(positions, ndim)
 
     if orientations is None:
@@ -57,4 +57,4 @@ def construct_cryopose_df(
         for k, v in metadata.items():
             df[k] = v
 
-    return validate_cryopose_dataframe(df, ndim=ndim)
+    return validate_poseset_dataframe(df, ndim=ndim)
