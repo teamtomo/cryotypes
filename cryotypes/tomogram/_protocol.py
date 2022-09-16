@@ -1,12 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 
 from numpy.typing import ArrayLike
-
-if TYPE_CHECKING:
-    from typing import Protocol, runtime_checkable
+from typing_extensions import Protocol, runtime_checkable
 
 
 @runtime_checkable
