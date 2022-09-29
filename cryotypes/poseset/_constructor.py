@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TYPE_CHECKING, Mapping, Sequence
 
 import numpy as np
@@ -24,6 +25,7 @@ def _construct_empty_poseset_df(ndim: Literal[2, 3] = 3) -> pd.DataFrame:
             CPDL.ORIENTATION,
             CPDL.PIXEL_SPACING,
             CPDL.EXPERIMENT_ID,
+            CPDL.SOURCE,
         ]
     )
 
@@ -33,6 +35,7 @@ def construct_poseset_df(
     orientations: Rotation | None = None,
     experiment_ids: str | Sequence[str] | None = None,
     pixel_spacing_angstroms: float | Sequence[float] | None = None,
+    sources: Sequence[str | Path | None] | None = None,
     metadata: Mapping[str, Sequence] | None = None,
     ndim: Literal[2, 3] = 3,
 ) -> pd.DataFrame:
@@ -51,6 +54,8 @@ def construct_poseset_df(
     if experiment_ids is None:
         experiment_ids = "0"
     df[CPDL.EXPERIMENT_ID] = experiment_ids
+
+    df[CPDL.SOURCE] = sources
 
     # optional columns
     if metadata is not None:

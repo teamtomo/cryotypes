@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -43,5 +44,13 @@ def validate_tomogram(
             )
         else:
             tomogram.pixel_spacing = float(tomogram.pixel_spacing)
+
+    if not isinstance(tomogram.source, (str, Path)):
+        if not coerce:
+            raise ValueError(
+                "source must be a Path or str, " f"got {tomogram.source.__class__}"
+            )
+        else:
+            tomogram.source = Path(tomogram.source)
 
     return tomogram

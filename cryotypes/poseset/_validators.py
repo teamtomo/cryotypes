@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TYPE_CHECKING, Sequence
 
 import numpy as np
@@ -81,5 +82,17 @@ def validate_poseset_dataframe(
             f'dtype of "{CPDL.EXPERIMENT_ID}" should be a string, '
             f"got {df[CPDL.EXPERIMENT_ID].dtype}"
         )
+
+    if CPDL.SOURCE not in df:
+        if not coerce:
+            raise KeyError(CPDL.SOURCE)
+        else:
+            df[CPDL.SOURCE] = None
+    elif not is_string_dtype(df[CPDL.SOURCE]):
+        if len(df) > 0:
+            if not all(isinstance(p, (Path, type(None))) for p in df[CPDL.SOURCE]):
+                raise TypeError(
+                    f'dtype of "{CPDL.SOURCE}" should be Path or str, got object'
+                )
 
     return df

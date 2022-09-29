@@ -9,3 +9,5 @@ class PoseSetDataLabels:
     EXPERIMENT_ID = "experiment_id"
 
     PIXEL_SPACING = "pixel_spacing"
+
+    SOURCE = "source"
