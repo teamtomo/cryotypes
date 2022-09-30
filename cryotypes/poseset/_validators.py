@@ -9,7 +9,7 @@ from numpy.typing import ArrayLike, NDArray
 from pandas.api.types import is_numeric_dtype, is_string_dtype
 from scipy.spatial.transform import Rotation
 
-from ._data_labels import PoseSetDataLabels as CPDL
+from ._data_labels import PoseSetDataLabels as PSDL
 
 if TYPE_CHECKING:
     import Literal
@@ -43,7 +43,7 @@ def validate_poseset_dataframe(
     if coerce:
         df = df.copy()
 
-    for col in CPDL.POSITION[:ndim]:
+    for col in PSDL.POSITION[:ndim]:
         if col not in df:
             if not coerce:
                 raise KeyError(col)
@@ -52,47 +52,47 @@ def validate_poseset_dataframe(
         elif not is_numeric_dtype(df[col]):
             raise TypeError(f'dtype of "{col}" should be a Number, got {df[col].dtype}')
 
-    if CPDL.ORIENTATION not in df:
+    if PSDL.ORIENTATION not in df:
         if not coerce:
-            raise KeyError(CPDL.ORIENTATION)
+            raise KeyError(PSDL.ORIENTATION)
         else:
-            df[CPDL.ORIENTATION] = Rotation.identity()
+            df[PSDL.ORIENTATION] = Rotation.identity()
     # cannot just check dtype, so we have to validate the objects themselves
     elif len(df) > 0:
-        validate_orientations(df[CPDL.ORIENTATION], ndim=ndim)
+        validate_orientations(df[PSDL.ORIENTATION], ndim=ndim)
 
-    if CPDL.PIXEL_SPACING not in df:
+    if PSDL.PIXEL_SPACING not in df:
         if not coerce:
-            raise KeyError(CPDL.PIXEL_SPACING)
+            raise KeyError(PSDL.PIXEL_SPACING)
         else:
-            df[CPDL.PIXEL_SPACING] = 1
-    elif not is_numeric_dtype(df[CPDL.PIXEL_SPACING]):
+            df[PSDL.PIXEL_SPACING] = 1
+    elif not is_numeric_dtype(df[PSDL.PIXEL_SPACING]):
         raise TypeError(
-            f'dtype of "{CPDL.PIXEL_SPACING}" should be a Number, '
-            f"got {df[CPDL.PIXEL_SPACING].dtype}"
+            f'dtype of "{PSDL.PIXEL_SPACING}" should be a Number, '
+            f"got {df[PSDL.PIXEL_SPACING].dtype}"
         )
 
-    if CPDL.EXPERIMENT_ID not in df:
+    if PSDL.EXPERIMENT_ID not in df:
         if not coerce:
-            raise KeyError(CPDL.EXPERIMENT_ID)
+            raise KeyError(PSDL.EXPERIMENT_ID)
         else:
-            df[CPDL.EXPERIMENT_ID] = "0"
-    elif not is_string_dtype(df[CPDL.EXPERIMENT_ID]):
+            df[PSDL.EXPERIMENT_ID] = "0"
+    elif not is_string_dtype(df[PSDL.EXPERIMENT_ID]):
         raise TypeError(
-            f'dtype of "{CPDL.EXPERIMENT_ID}" should be a string, '
-            f"got {df[CPDL.EXPERIMENT_ID].dtype}"
+            f'dtype of "{PSDL.EXPERIMENT_ID}" should be a string, '
+            f"got {df[PSDL.EXPERIMENT_ID].dtype}"
         )
 
-    if CPDL.SOURCE not in df:
+    if PSDL.SOURCE not in df:
         if not coerce:
-            raise KeyError(CPDL.SOURCE)
+            raise KeyError(PSDL.SOURCE)
         else:
-            df[CPDL.SOURCE] = None
-    elif not is_string_dtype(df[CPDL.SOURCE]):
+            df[PSDL.SOURCE] = None
+    elif not is_string_dtype(df[PSDL.SOURCE]):
         if len(df) > 0:
-            if not all(isinstance(p, (Path, type(None))) for p in df[CPDL.SOURCE]):
+            if not all(isinstance(p, (Path, type(None))) for p in df[PSDL.SOURCE]):
                 raise TypeError(
-                    f'dtype of "{CPDL.SOURCE}" should be Path or str, got object'
+                    f'dtype of "{PSDL.SOURCE}" should be Path or str, got object'
                 )
 
     return df

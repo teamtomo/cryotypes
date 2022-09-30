@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from scipy.spatial.transform import Rotation
 
-from ._data_labels import PoseSetDataLabels as CPDL
+from ._data_labels import PoseSetDataLabels as PSDL
 from ._validators import (
     validate_orientations,
     validate_poseset_dataframe,
@@ -21,11 +21,11 @@ if TYPE_CHECKING:
 def _construct_empty_poseset_df(ndim: Literal[2, 3] = 3) -> pd.DataFrame:
     return pd.DataFrame(
         columns=[
-            *CPDL.POSITION[:ndim],
-            CPDL.ORIENTATION,
-            CPDL.PIXEL_SPACING,
-            CPDL.EXPERIMENT_ID,
-            CPDL.SOURCE,
+            *PSDL.POSITION[:ndim],
+            PSDL.ORIENTATION,
+            PSDL.PIXEL_SPACING,
+            PSDL.EXPERIMENT_ID,
+            PSDL.SOURCE,
         ]
     )
 
@@ -41,21 +41,21 @@ def construct_poseset_df(
 ) -> pd.DataFrame:
     """Constructor for a valid poseset DataFrame."""
     df = _construct_empty_poseset_df(ndim)
-    df[CPDL.POSITION[:ndim]] = validate_positions(positions, ndim)
+    df[PSDL.POSITION[:ndim]] = validate_positions(positions, ndim)
 
     if orientations is None:
         orientations = Rotation.identity(len(positions))
-    df[CPDL.ORIENTATION] = validate_orientations(orientations, ndim)
+    df[PSDL.ORIENTATION] = validate_orientations(orientations, ndim)
 
     if pixel_spacing_angstroms is None:
         pixel_spacing_angstroms = 1.0
-    df[CPDL.PIXEL_SPACING] = pixel_spacing_angstroms
+    df[PSDL.PIXEL_SPACING] = pixel_spacing_angstroms
 
     if experiment_ids is None:
         experiment_ids = "0"
-    df[CPDL.EXPERIMENT_ID] = experiment_ids
+    df[PSDL.EXPERIMENT_ID] = experiment_ids
 
-    df[CPDL.SOURCE] = sources
+    df[PSDL.SOURCE] = sources
 
     # optional columns
     if metadata is not None:
