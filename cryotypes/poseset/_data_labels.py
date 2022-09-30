@@ -1,4 +1,4 @@
-class CryoPoseDataLabels:
+class PoseSetDataLabels:
     POSITION_X = "x"
     POSITION_Y = "y"
     POSITION_Z = "z"
@@ -9,3 +9,5 @@ class CryoPoseDataLabels:
     EXPERIMENT_ID = "experiment_id"
 
     PIXEL_SPACING = "pixel_spacing"
+
+    SOURCE = "source"
