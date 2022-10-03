@@ -16,6 +16,10 @@ class ImageProtocol(Protocol):
     stack: bool
 
 
-@dataclass  # type: ignore
-class Image(ImageProtocol):
-    pass
+@dataclass
+class Image:
+    data: ArrayLike
+    experiment_id: str
+    pixel_spacing: float
+    source: Path | str
+    stack: bool
