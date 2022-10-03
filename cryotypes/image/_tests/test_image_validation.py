@@ -3,10 +3,10 @@ from dataclasses import dataclass
 import numpy as np
 import pytest
 
-from cryotypes.tomogram._validators import validate_tomogram
+from cryotypes.image._validators import validate_image
 
 
-def test_validate_tomogram():
+def test_validate_image():
     @dataclass
     class WrongAttr:
         x = 1
@@ -17,6 +17,7 @@ def test_validate_tomogram():
         experiment_id = "s"
         pixel_spacing = 1
         source = "file.mrc"
+        stack = False
 
     @dataclass
     class WrongPixel:
@@ -24,6 +25,7 @@ def test_validate_tomogram():
         experiment_id = "s"
         pixel_spacing = "a"
         source = "file.mrc"
+        stack = False
 
     @dataclass
     class WrongExpID:
@@ -31,6 +33,7 @@ def test_validate_tomogram():
         experiment_id = ()
         pixel_spacing = 1
         source = "file.mrc"
+        stack = False
 
     @dataclass
     class WrongSource:
@@ -38,6 +41,15 @@ def test_validate_tomogram():
         experiment_id = "s"
         pixel_spacing = 1
         source = 1
+        stack = False
+
+    @dataclass
+    class WrongStack:
+        data = np.empty((3, 3, 3))
+        experiment_id = "s"
+        pixel_spacing = 1
+        source = 1
+        stack = "s"
 
     @dataclass
     class Right:
@@ -45,6 +57,7 @@ def test_validate_tomogram():
         experiment_id = "s"
         pixel_spacing = 1
         source = "file.mrc"
+        stack = False
 
     @dataclass
     class CanCoerce:
@@ -52,22 +65,26 @@ def test_validate_tomogram():
         experiment_id = 0
         pixel_spacing = 1
         source = "file.mrc"
+        stack = False
 
     with pytest.raises(ValueError):
-        validate_tomogram(WrongAttr())
+        validate_image(WrongAttr())
 
     with pytest.raises(ValueError):
-        validate_tomogram(WrongData())
+        validate_image(WrongData())
 
     with pytest.raises(ValueError):
-        validate_tomogram(WrongPixel())
+        validate_image(WrongPixel())
 
     with pytest.raises(ValueError):
-        validate_tomogram(WrongExpID())
+        validate_image(WrongExpID())
 
     with pytest.raises(ValueError):
-        validate_tomogram(WrongSource())
+        validate_image(WrongSource())
 
-    validate_tomogram(Right())
+    with pytest.raises(ValueError):
+        validate_image(WrongStack())
 
-    validate_tomogram(CanCoerce(), coerce=True)
+    validate_image(Right())
+
+    validate_image(CanCoerce(), coerce=True)
