@@ -22,6 +22,7 @@ def _construct_empty_poseset_df(ndim: Literal[2, 3] = 3) -> pd.DataFrame:
     return pd.DataFrame(
         columns=[
             *PSDL.POSITION[:ndim],
+            *PSDL.SHIFT[:ndim],
             PSDL.ORIENTATION,
             PSDL.PIXEL_SPACING,
             PSDL.EXPERIMENT_ID,
@@ -32,6 +33,7 @@ def _construct_empty_poseset_df(ndim: Literal[2, 3] = 3) -> pd.DataFrame:
 
 def construct_poseset_df(
     positions: np.ndarray,
+    shifts: np.ndarray | None = None,
     orientations: Rotation | None = None,
     experiment_ids: str | Sequence[str] | None = None,
     pixel_spacing_angstroms: float | Sequence[float] | None = None,
@@ -42,6 +44,10 @@ def construct_poseset_df(
     """Constructor for a valid poseset DataFrame."""
     df = _construct_empty_poseset_df(ndim)
     df[PSDL.POSITION[:ndim]] = validate_positions(positions, ndim)
+
+    if shifts is None:
+        shifts = np.zeros((len(positions), ndim))
+    df[PSDL.SHIFT[:ndim]] = validate_positions(shifts, ndim)
 
     if orientations is None:
         orientations = Rotation.identity(len(positions))

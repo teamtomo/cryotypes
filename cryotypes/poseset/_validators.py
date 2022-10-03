@@ -43,7 +43,7 @@ def validate_poseset_dataframe(
     if coerce:
         df = df.copy()
 
-    for col in PSDL.POSITION[:ndim]:
+    for col in PSDL.POSITION[:ndim] + PSDL.SHIFT[:ndim]:
         if col not in df:
             if not coerce:
                 raise KeyError(col)
