@@ -8,13 +8,14 @@ from typing_extensions import Protocol, runtime_checkable
 
 
 @runtime_checkable
-class TomogramProtocol(Protocol):
+class ImageProtocol(Protocol):
     data: ArrayLike
     experiment_id: str
     pixel_spacing: float
     source: Path | str
+    stack: bool
 
 
 @dataclass  # type: ignore
-class Tomogram(TomogramProtocol):
+class Image(ImageProtocol):
     pass
