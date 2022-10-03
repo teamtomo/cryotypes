@@ -23,6 +23,9 @@ A `PoseSet` is a [pandas `DataFrame`](https://pandas.pydata.org/docs/) with spec
 | `x`             | POSITION_X    | particle position in x-dimension                     |
 | `y`             | POSITION_Y    | particle position in y-dimension                     |
 | `z`             | POSITION_Z    | particle position in z-dimension                     |
+| `dx`            | SHIFT_X       | particle shift in x-dimension                        |
+| `dy`            | SHIFT_Y       | particle shift in y-dimension                        |
+| `dz`            | SHIFT_Z       | particle shift in z-dimension                        |
 | `orientation`   | ORIENTATION   | particle orientation                                 |
 | `experiment_id` | EXPERIMENT_ID | experimental identifier for micrograph/tilt-series   |
 | `pixel_spacing` | PIXEL_SPACING | isotropic pixel/voxel spacing for particle positions |
@@ -37,6 +40,9 @@ pose_dataframe[PSDL.POSITION_X] = xyz[:, 0]
 
 ### Positions
 Particle positions are coordinates in 2D or 3D images. The center of the first pixel is taken to be the origin `(0, 0)` or `(0, 0, 0)` and the units of particle positions are pixels.
+
+### Shifts
+Particle shifts are in image pixels and are additive to positions, such that `POSITION + SHIFT` is the position of the particle in the tomogram.
 
 ### Orientations
 Particle orientations are stored as
