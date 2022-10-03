@@ -42,7 +42,7 @@ pose_dataframe[PSDL.POSITION_X] = xyz[:, 0]
 Particle positions are coordinates in 2D or 3D images. The center of the first pixel is taken to be the origin `(0, 0)` or `(0, 0, 0)` and the units of particle positions are pixels.
 
 ### Shifts
-Particle shifts are in image pixels and are additive to positions, such that `POSITION + SHIFT` is the "real" position of the particle.
+Particle shifts are in image pixels and are additive to positions, such that `POSITION + SHIFT` is the position of the particle in the tomogram.
 
 ### Orientations
 Particle orientations are stored as
