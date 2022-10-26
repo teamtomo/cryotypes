@@ -6,7 +6,7 @@
 [![CI](https://github.com/teamtomo/cryotypes/workflows/ci/badge.svg)](https://github.com/alisterburt/cryotypes/actions)
 [![codecov](https://codecov.io/gh/teamtomo/cryotypes/branch/master/graph/badge.svg)](https://codecov.io/gh/teamtomo/cryotypes)
 
-`cryotypes` defines a set of super-simple, extensible data structures for the fundamental types of cryoEM data and their relative metadata:
+`cryotypes` defines a set of super-simple, extensible data structures for the fundamental types of cryoEM data and their relevant metadata:
 - `PoseSet`: a set of particle poses, compatible with 2D and 3D data
 - `Tomogram`: a 3D image
 - `Micrograph`: a 2D image
@@ -27,31 +27,39 @@ A `PoseSet` is a [pandas `DataFrame`](https://pandas.pydata.org/docs/) with spec
 | `dy`            | SHIFT_Y       | particle shift in y-dimension                        |
 | `dz`            | SHIFT_Z       | particle shift in z-dimension                        |
 | `orientation`   | ORIENTATION   | particle orientation                                 |
-| `experiment_id` | EXPERIMENT_ID | experimental identifier for micrograph/tilt-series   |
+| `experiment_id` | EXPERIMENT_ID | identifier for micrograph/tilt-series                |
 | `pixel_spacing` | PIXEL_SPACING | isotropic pixel/voxel spacing for particle positions |
 
 The labels can be conveniently accessed from Python should you need them.
 
 ```python
-from cryotypes import PoseSetDataLabels as CPDL
+from cryotypes.poseset import PoseSetDataLabels as PSDL
 
-pose_dataframe[PSDL.POSITION_X] = xyz[:, 0]
+xyz = df[[PSDL.POSITION_X, PSDL.POSITION_Y, PSDL.POSITION_Z]]
 ```
 
 ### Positions
-Particle positions are coordinates in 2D or 3D images. The center of the first pixel is taken to be the origin `(0, 0)` or `(0, 0, 0)` and the units of particle positions are pixels.
+Particle positions are coordinates in 2D or 3D images. 
+The center of the first pixel is taken to be the origin `(0, 0)` or `(0, 0, 0)` and the units of 
+particle positions are pixels.
 
 ### Shifts
-Particle shifts are in image pixels and are additive to positions, such that `POSITION + SHIFT` is the position of the particle in the tomogram.
+Particle shifts are in image pixels and are additive to positions, 
+such that `POSITION + SHIFT` is the position of the particle in the tomogram.
 
 ### Orientations
 Particle orientations are stored as
-[`scipy.spatial.transform.Rotation`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html) objects.
-These transformations should rotate the basis vectors of a reference such that they are correctly oriented in a tomogram.
+[`scipy.spatial.transform.Rotation`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html)
+objects. These transformations should rotate the basis vectors (ordered xyz) of a reference such 
+that they are correctly oriented in a tomogram.
+
+**Note:** this yields rotated basis vectored ordered xyz whilst dimensions in an image are zyx.
 
 
 ## `Tomogram`
-A `Tomogram` is an object that follows a specific [python `Protocol`](https://docs.python.org/3/library/typing.html#typing.Protocol) for tomogram data. The protocol specifies the following attributes:
+A `Tomogram` is an object that follows a specific 
+[python `Protocol`](https://docs.python.org/3/library/typing.html#typing.Protocol)
+for tomogram data. The protocol specifies the following attributes:
 
 - `data`: an array-like 3D image (`numpy`, `dask`, ...)
 - `experiment_id`: experimental identifier
