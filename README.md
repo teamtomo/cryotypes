@@ -35,7 +35,7 @@ The labels can be conveniently accessed from Python should you need them.
 ```python
 from cryotypes.poseset import PoseSetDataLabels as PSDL
 
-xyz = df[[PSDL.POSITION_X, PSDL.POSITION_Y, PSDL.POSITION_Z]]
+xyz = df[PSDL.POSITION]
 ```
 
 ### Positions
