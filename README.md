@@ -66,6 +66,8 @@ headings for the parameters of a projection model. Together, this information co
 | `source`        | SOURCE        | reference to the file from which data came        |
 
 A utility function is also provided for generating projection matrices from these data.
+These projection matrices can be used to calculate a 2D position in a tilt-image from a 3D position
+in the tomogram.
 
 ```python
 from cryotypes.projectionmodel import projection_model_to_projection_matrices
