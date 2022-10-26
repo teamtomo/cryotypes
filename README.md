@@ -54,16 +54,16 @@ These transformations should rotate the basis vectors of a reference such that t
 A `ProjectionModel` is a [pandas `DataFrame`](https://pandas.pydata.org/docs/) with specific column 
 headings for the parameters of a projection model. Together, this information constitues a 'tilt-series alignment'.
 
-| Heading         | Python name   | Semantics                                  |
-|:----------------|:--------------|:-------------------------------------------|
-| `rotation_x`    | ROTATION_X    | tomogram rotation around x-axis            |
-| `rotation_y`    | ROTATION_Y    | tomogram rotation around y-axis            |
-| `rotation_z`    | ROTATION_Z    | tomogram rotation around z-axis            |
-| `dx`            | SHIFT_X       | particle shift in x-dimension              |
-| `dy`            | SHIFT_Y       | particle shift in y-dimension              |
-| `experiment_id` | EXPERIMENT_ID | identifier for micrograph/tilt-series      |
-| `pixel_spacing` | PIXEL_SPACING | isotropic pixel/voxel spacing for shifts   |
-| `source`        | SOURCE        | reference to the file from which data came |
+| Heading         | Python name   | Semantics                                         |
+|:----------------|:--------------|:--------------------------------------------------|
+| `rotation_x`    | ROTATION_X    | specimen rotation around x-axis                   |
+| `rotation_y`    | ROTATION_Y    | specimen rotation around y-axis                   |
+| `rotation_z`    | ROTATION_Z    | specimen rotation around z-axis                   |
+| `dx`            | SHIFT_X       | specimen shift in x-dimension of the camera plane |
+| `dy`            | SHIFT_Y       | particle shift in y-dimension of the camera plane |
+| `experiment_id` | EXPERIMENT_ID | identifier for micrograph/tilt-series             |
+| `pixel_spacing` | PIXEL_SPACING | isotropic pixel/voxel spacing for shifts          |
+| `source`        | SOURCE        | reference to the file from which data came        |
 
 A utility function is also provided for generating projection matrices from these data.
 
