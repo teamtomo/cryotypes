@@ -65,6 +65,12 @@ headings for the parameters of a projection model. Together, this information co
 | `pixel_spacing` | PIXEL_SPACING | isotropic pixel/voxel spacing for shifts          |
 | `source`        | SOURCE        | reference to the file from which data came        |
 
+In the microsope reference frame, the z-axis is the beam direction.
+Extrinsic rotation of the tomogram around the x-axis, the y-axis, then the z-axis by 
+`rotation_x`, `rotation_y`, `rotation_z` followed by projection along the z-axis (beam direction)
+then shifting the 2D image in the camera plane by `dx` and `dy` produces the experimental projection
+image.
+
 A utility function is also provided for generating projection matrices from these data.
 These projection matrices can be used to calculate a 2D position in a tilt-image from a 3D position
 in the tomogram.
