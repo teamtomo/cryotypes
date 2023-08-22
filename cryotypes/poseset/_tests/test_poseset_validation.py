@@ -1,36 +1,110 @@
+from dataclasses import dataclass
+
 import numpy as np
-import pandas as pd
 import pytest
+from scipy.spatial.transform import Rotation
 
-from cryotypes.poseset._validators import validate_poseset_dataframe, validate_positions
+from cryotypes.poseset._validators import validate_poseset
 
 
-def test_position_validator():
-    pos3d = np.random.rand(10, 3)
-    valid = validate_positions(pos3d, 3)
-    assert valid.shape == (10, 3)
+def test_validate_poseset():
+    @dataclass
+    class WrongAttr:
+        x = 1
+
+    @dataclass
+    class WrongPos:
+        position = 1
+        shift = None
+        orientation = None
+        experiment_id = "s"
+        pixel_spacing = 1
+        source = "file.star"
+
+    @dataclass
+    class WrongShift:
+        position = np.empty((10, 3))
+        shift = 1
+        orientation = None
+        experiment_id = "s"
+        pixel_spacing = 1
+        source = "file.star"
+
+    @dataclass
+    class WrongOri:
+        position = np.empty((10, 3))
+        shift = np.empty((10, 3))
+        orientation = Rotation.identity(2)
+        experiment_id = "s"
+        pixel_spacing = 1
+        source = "file.star"
+
+    @dataclass
+    class WrongPixel:
+        position = np.empty((10, 3))
+        shift = None
+        orientation = None
+        experiment_id = "s"
+        pixel_spacing = "a"
+        source = "file.star"
+
+    @dataclass
+    class WrongExpID:
+        position = np.empty((10, 3))
+        shift = None
+        orientation = None
+        experiment_id = ()
+        pixel_spacing = 1
+        source = "file.star"
+
+    @dataclass
+    class WrongSource:
+        position = np.empty((10, 3))
+        shift = None
+        orientation = None
+        experiment_id = "s"
+        pixel_spacing = 1
+        source = 1
+
+    @dataclass
+    class Right:
+        position = np.empty((10, 3))
+        shift = np.empty((10, 3))
+        orientation = Rotation.identity(10)
+        experiment_id = "s"
+        pixel_spacing = 1
+        source = "file.star"
+
+    @dataclass
+    class CanCoerce:
+        position = np.empty((10, 3))
+        shift = np.empty((10, 2))
+        orientation = None
+        experiment_id = 0
+        pixel_spacing = 1
+        source = "file.star"
 
     with pytest.raises(ValueError):
-        validate_positions(pos3d, 2)
-
-    pos2d = np.random.rand(10, 2)
-    valid = validate_positions(pos2d, 2)
-    assert valid.shape == (10, 2)
+        validate_poseset(WrongAttr())
 
     with pytest.raises(ValueError):
-        validate_positions(pos2d, 3)
+        validate_poseset(WrongPos())
 
-    wrong = np.random.rand(10, 4)
     with pytest.raises(ValueError):
-        validate_positions(wrong, 2)
+        validate_poseset(WrongShift())
+
     with pytest.raises(ValueError):
-        validate_positions(wrong, 3)
+        validate_poseset(WrongOri())
 
+    with pytest.raises(ValueError):
+        validate_poseset(WrongPixel())
 
-def test_validate_poseset_dataframe():
-    df = pd.DataFrame()
+    with pytest.raises(ValueError):
+        validate_poseset(WrongExpID())
 
-    with pytest.raises(KeyError):
-        validate_poseset_dataframe(df)
+    with pytest.raises(ValueError):
+        validate_poseset(WrongSource())
 
-    validate_poseset_dataframe(df, coerce=True)
+    validate_poseset(Right())
+
+    validate_poseset(CanCoerce(), coerce=True)
