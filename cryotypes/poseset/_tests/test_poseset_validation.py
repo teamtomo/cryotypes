@@ -80,7 +80,7 @@ def test_validate_poseset():
         position = np.empty((10, 3))
         shift = np.empty((10, 2))
         orientation = None
-        experiment_id = 0
+        experiment_id = "s"
         pixel_spacing = 1
         source = "file.star"
 
@@ -107,4 +107,6 @@ def test_validate_poseset():
 
     validate_poseset(Right())
 
-    validate_poseset(CanCoerce(), coerce=True)
+    can_coerce = CanCoerce()
+    coerced = validate_poseset(CanCoerce(), coerce=True)
+    assert can_coerce.shift.shape != coerced.shift.shape
