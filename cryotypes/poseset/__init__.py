@@ -1,5 +1,4 @@
-from ._data_labels import PoseSetDataLabels
-from ._typing import PoseSet
-from ._validators import validate_poseset_dataframe
+from ._protocol import PoseSet, PoseSetProtocol
+from ._validators import validate_poseset
 
-__all__ = ["validate_poseset_dataframe", "PoseSet", "PoseSetDataLabels"]
+__all__ = ["validate_poseset", "PoseSet", "PoseSetProtocol"]
