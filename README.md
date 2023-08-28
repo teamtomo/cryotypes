@@ -14,34 +14,35 @@
 
 Each cryotype defines an `experiment_id` attribute which is intended as a unique identifier for individual experiments. This can be used, for example, to match particles to the correct tilt series and tomogram.
 
+## `Image`
+
+An `Image` is a dataclass holding a simple data array and some metadata.
+
+### Image fields
+| Field           | Semantics                                       |
+|:----------------|:------------------------------------------------|
+| `data`          | image data (ZYX ordering)                       |
+| `experiment_id` | identifier for micrograph/tilt-series           |
+| `pixel_spacing` | isotropic pixel/voxel spacing                   |
+| `source`        | the source file of this data                    |
+| `stack`         | whether the data represent a stack of 2D images |
 
 ## `PoseSet`
-A `PoseSet` is a [pandas `DataFrame`](https://pandas.pydata.org/docs/) with specific column headings for particle positions and orientations, experiment identifiers and pixel/voxel spacing. This data-structure can be used for both 2D and 3D particle poses.
+A `PoseSet` is a dataclass with a few fields describing positions, orientations and so on for a set of particles. It can be used for both 2D and 3D particle poses.
 
-### DataFrame column headings
-| Heading         | Python name   | Semantics                                            |
-|:----------------|:--------------|:-----------------------------------------------------|
-| `x`             | POSITION_X    | particle position in x-dimension                     |
-| `y`             | POSITION_Y    | particle position in y-dimension                     |
-| `z`             | POSITION_Z    | particle position in z-dimension                     |
-| `dx`            | SHIFT_X       | particle shift in x-dimension                        |
-| `dy`            | SHIFT_Y       | particle shift in y-dimension                        |
-| `dz`            | SHIFT_Z       | particle shift in z-dimension                        |
-| `orientation`   | ORIENTATION   | particle orientation                                 |
-| `experiment_id` | EXPERIMENT_ID | identifier for micrograph/tilt-series                |
-| `pixel_spacing` | PIXEL_SPACING | isotropic pixel/voxel spacing for particle positions |
-
-The labels can be conveniently accessed from Python should you need them.
-
-```python
-from cryotypes.poseset import PoseSetDataLabels as PSDL
-
-xyz = df[PSDL.POSITION]
-```
+### PoseSet fields
+| Field           | Semantics                                            |
+|:----------------|:-----------------------------------------------------|
+| `position`      | particle positions (x, y, z) in pixels               |
+| `shift`         | particle shifts (x, y, z) in pixels                  |
+| `orientation`   | particle orientation                                 |
+| `experiment_id` | identifier for micrograph/tilt-series                |
+| `pixel_spacing` | isotropic pixel/voxel spacing for particle positions |
+| `source`        | the source file of this data                         |
 
 ### Positions
-Particle positions are coordinates in 2D or 3D images. 
-The center of the first pixel is taken to be the origin `(0, 0)` or `(0, 0, 0)` and the units of 
+Particle positions are coordinates in 2D or 3D images (for 2D, z is simply set to 0).
+The center of the first pixel is taken to be the origin `(0, 0, 0)` and the units of 
 particle positions are pixels.
 
 ### Shifts
@@ -54,7 +55,7 @@ Particle orientations are stored as
 objects. These transformations should rotate the basis vectors (ordered xyz) of a reference such 
 that they are correctly oriented in a tomogram.
 
-**Note:** this yields rotated basis vectored ordered xyz whilst dimensions in an image are zyx.
+**Note:** this yields rotated basis vectored ordered xyz whilst dimensions in an image are normally zyx!
 
 ## `ProjectionModel`
 A `ProjectionModel` is a [pandas `DataFrame`](https://pandas.pydata.org/docs/) with specific column 
