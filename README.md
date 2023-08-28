@@ -33,8 +33,8 @@ A `PoseSet` is a dataclass with a few fields describing positions, orientations 
 ### PoseSet fields
 | Field           | Semantics                                            |
 |:----------------|:-----------------------------------------------------|
-| `position`      | particle positions (x, y, z) in pixels             |
-| `shift`         | particle shifts (x, y, z) in pixels              |
+| `position`      | particle positions (x, y, z) in pixels               |
+| `shift`         | particle shifts (x, y, z) in pixels                  |
 | `orientation`   | particle orientation                                 |
 | `experiment_id` | identifier for micrograph/tilt-series                |
 | `pixel_spacing` | isotropic pixel/voxel spacing for particle positions |
